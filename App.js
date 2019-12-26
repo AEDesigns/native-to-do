@@ -1,45 +1,61 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import Header from "./Components/header";
 import TodoItem from "./Components/TodoItem";
 import AddtoDo from "./Components/addtoDo";
 
 export default function App() {
-  const [todo, setTodo] = useState([
-    { text: "Buy Milk", key: "1" },
-    { text: "Pay Car Note", key: "2" },
-    { text: "Pack Up Belongings", key: "3" }
-  ]);
+  const [todo, setTodo] = useState([]);
 
-  const pressHandler = key => {
+  const deleteHandler = key => {
     setTodo(prevToDo => {
       return prevToDo.filter(todo => todo.key != key);
     });
   };
 
-  const submitHandler = text => {
-    setTodo(prevToDo => {
-      return [{ text: text, key: Math.random().toString() }, ...prevToDo];
-    });
+  const pressHandler = text => {
+    if (text.length > 3) {
+      setTodo(prevToDo => {
+        return [...prevToDo, { text: text, key: Math.random().toString() }];
+      });
+    } else {
+      Alert.alert("OOPS", "To-Dos must be over 3 characters long", [
+        { text: "Understood" }
+      ]);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      {/* {Header} */}
-      <Header />
-      <View style={styles.content}>
-        {/* {To Do Form} */}
-        <AddtoDo submitHandler={submitHandler} />
-        <View style={styles.list}>
-          <FlatList
-            data={todo}
-            renderItem={({ item }) => (
-              <TodoItem item={item} pressHandler={pressHandler} />
-            )}
-          />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        {/* {Header} */}
+        <Header />
+        <View style={styles.content}>
+          {/* {To Do Form} */}
+          <AddtoDo pressHandler={pressHandler} />
+          <View style={styles.list}>
+            <FlatList
+              data={todo}
+              renderItem={({ item }) => (
+                <TodoItem item={item} deleteHandler={deleteHandler} />
+              )}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

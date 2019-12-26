@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-export default function AddtoDo({ submitHandler }) {
+export default function AddtoDo({ pressHandler }) {
   const [text, setText] = useState("");
   const changeHandler = val => {
     setText(val);
@@ -14,7 +14,11 @@ export default function AddtoDo({ submitHandler }) {
         placeholder="New To Do..."
         onChangeText={changeHandler}
       />
-      <Button onPress={submitHandler(text)} title="Add ToDo" color="coral" />
+      <Button
+        onPress={() => pressHandler(text)}
+        title="Add ToDo"
+        color="coral"
+      />
     </View>
   );
 }
