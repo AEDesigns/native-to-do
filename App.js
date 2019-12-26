@@ -1,10 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
 export default function App() {
+  const [todo, setTodo] = useState([
+    { text: "Buy Milk", key: "1" },
+    { text: "Pay Car Note", key: "2" },
+    { text: "Pack Up Belongings", key: "3" }
+  ]);
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {/* {Header} */}
+      <View style={styles.content}>
+        {/* {To Do Form} */}
+        <View style={styles.list}>
+          <FlatList
+            data={todo}
+            renderItem={({ item }) => <Text>{item.text}</Text>}
+          />
+        </View>
+      </View>
     </View>
   );
 }
@@ -12,8 +26,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#fff"
+  }
 });
